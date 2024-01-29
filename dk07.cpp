@@ -1,32 +1,52 @@
 /*Hailun*/
-#include <iostream>
-#include <iomanip>
+#include <stdio.h>
 #include <math.h>
 
-using namespace std;
-
-void gptb1(int a, int b){
-    if(a == 0){
-        if(b == 0) cout << "INF";
-        else cout << "NO";
-    }else cout << fixed << setprecision(2) << (float)-b/a;
+void hoanvi(float *x1,float *x2)
+{
+    float t = *x1;
+    *x1 = *x2;
+    *x2= t;
 }
-
-void gptb2(int a, int b, int c){
-    if(a == 0) gptb1(b, c);
-    else{
-        int delta = b*b - 4*a*c;
-        if(delta < 0) cout << "NO";
-        else if(delta == 0) cout << fixed << setprecision(2) << (float)-b/(2*a);
-        else{
-            cout << fixed << setprecision(2) << (float)(-b - sqrt(delta))/(2*a) << " " << (float)(-b + sqrt(delta))/(2*a);
-        }
+float tinhptb2(float a,float b,float c, float *x1,float *x2)
+{
+    float denta;
+    if(a==0 && b==0 && c==0){
+        return 0;
+    }else if(a==0 && b==0 && c!=0){
+        return -1;
+    }else if(a==0 && b!=0){
+        *x1 = (float)-c/b;
+        return 1;
+    }
+    denta = b*b - 4*a*c;
+    if(denta < 0){
+        return -1;
+    }else if(denta == 0){
+        *x1 = (float)-b/(2*a);
+        return 1;
+    }else{
+        *x1 = (float)(-b+sqrt(denta))/(2*a);
+        *x2 = (float)(-b-sqrt(denta))/(2*a);
+        return 2;
     }
 }
 
-int main(){
-    int a, b, c;
-    cin >> a >> b >> c;
-    gptb2(a, b, c);
-    return 0;
+int main()
+{
+    float s,a,b,c;
+    float x1,x2;
+    scanf("%f%f%f",&a,&b,&c);
+    s = tinhptb2(a,b,c,&x1,&x2);
+    if(s==-1){
+        printf("NO");
+    }else if(s==0){
+        printf("WOW");
+    }else if(s==1){
+        printf("%.2f",x1);
+    }else{
+        if(x1>x2){
+            hoanvi(&x1,&x2);
+        } printf("%.2f %.2f",x1,x2);
+    }
 }
